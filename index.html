@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+</head>
+<body>
+    <div class="calculator">
+        
+        <div id="display">0</div>
+
+        <div>
+            <button onclick="press('7')">7</button>
+            <button onclick="press('8')">8</button>
+            <button onclick="press('9')">9</button>
+            <button onclick="setOp('4')">4</button>
+            <button onclick="press('5')">5</button>
+            <button onclick="press('6')">6</button>
+            <button onclick="press('1')">1</button>
+            <button onclick="setOp('2')">2</button>
+            <button onclick="press('3')">3</button>
+            <button onclick="press('0')">0</button>
+            <button onclick="press('.')">.</button>
+            <button onclick="setOp('-')">−</button>
+            <button onclick="press('/')">÷</button>
+            <button onclick="press('*')">×</button>
+            <button onclick="calculate()">=</button>
+            <button onclick="setOp('+')">+</button>
+            <button onclick="clearDisplay()" style="width: 96%">C</button>
+        </div>
+    </div>
+
+    <script>
+        let current = '0', prev = '', op = null;
+        const display = document.getElementById('display');
+
+        function update() { 
+            display.innerText = prev && op ? `${prev} ${op} ${current}` : current; 
+        }
+        
+        function press(num) { 
+            current = current === '0' ? num : current + num; 
+            update(); 
+        }
+        
+        function setOp(operation) { 
+            if (current) { 
+                calculate(); 
+                op = operation; 
+                prev = current; 
+                current = '0'; 
+            }
+            update();
+        }
+        
+        function calculate() {
+            if (!op) return;
+            current = String(eval(prev + op + current)); // Note: eval for simplicity, avoid in production.
+            op = null; 
+            prev = ''; 
+            update();
+        }
+        
+        function clearDisplay() { 
+            current = '0'; 
+            prev = ''; 
+            op = null; 
+            update(); 
+        }
+    </script>
+</body>
+</html>
+<style>
+    body { 
+        background-color: lightgray;
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        height: 100vh; 
+        margin: 0; 
+        font-family: Arial, sans-serif;
+    }
+
+    .calculator { 
+        text-align: center; 
+        width: 200px; 
+    }
+
+    #display { 
+        font-size: 1.5em;
+        padding: 10px;
+        background-color: white;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: right;
+    }
+
+    button { 
+        width: 23%; 
+        padding: 15px; 
+        font-size: 1.5em; 
+        margin: 3px;
+    }
+</style>
